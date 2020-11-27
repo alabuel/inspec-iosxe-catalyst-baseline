@@ -1,0 +1,14 @@
+Building configuration...
+
+Current configuration : 335 bytes
+!
+interface FastEthernet0/0
+ ip address 10.2.3.2 255.255.255.0
+ ip verify unicast source reachable-via rx
+ ip authentication mode eigrp 1 md5
+ ip authentication key-chain eigrp 1 examplekeychain
+ ip rip authentication mode md5
+ ip rip authentication key-chain ripkeychain
+ ip ospf message-digest-key 1 md5 examplekey
+ duplex half
+end

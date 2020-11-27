@@ -1,0 +1,28 @@
+Community name: ILMI
+Community Index: cisco0
+Community SecurityName: ILMI
+storage-type: read-only  active
+
+
+Community name: pubcomstring
+Community Index: cisco1
+Community SecurityName: pubcomstring
+storage-type: nonvolatile  active
+
+
+Community name: Private
+Community Index: cisco2
+Community SecurityName: Private
+storage-type: nonvolatile  active
+
+
+Community name: pubwithacl
+Community Index: cisco3
+Community SecurityName: pubwithacl
+storage-type: nonvolatile  active access-list: 1
+
+
+Community name: snmptrap
+Community Index: cisco4
+Community SecurityName: snmptrap
+storage-type: nonvolatile  active

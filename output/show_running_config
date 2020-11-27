@@ -1,0 +1,518 @@
+Current configuration : 16522 bytes 
+! 
+! Last configuration change at 12:18:48 SGT Fri Oct 16 2020 by nua-okkara.padm 
+! NVRAM config last updated at 12:18:49 SGT Fri Oct 16 2020 by nua-okkara.padm 
+! version 16.12 
+no service pad 
+service tcp-keepalives-in 
+service tcp-keepalives-out 
+service timestamps debug datetime localtime show-timezone year 
+service timestamps log datetime localtime show-timezone year 
+service password-encryption 
+no service dhcp 
+service call-home 
+no platform punt-keepalive disable-kernel-core 
+! hostname GCCIN3BIOCESP01 
+! 
+! 
+vrf definition Mgmt-vrf 
+ ! 
+ address-family ipv4 
+ exit-address-family 
+ ! 
+ address-family ipv6 
+ exit-address-family 
+! 
+logging buffered 64000
+logging console informational
+enable secret 9 $9$USXQ15iTO7nrW.SacfzYmtakVoNmejFf5nq3K.HQ64YpO3RGECFp4/Ps3U 
+! 
+aaa new-model 
+aaa local authentication attempts max-fail 10 
+! 
+! 
+aaa group server tacacs+ CCIS-AAA-LIST 
+ server-private 10.125.82.103 key 7 0228115807031A3210693D5F2B3421555D5C7A797C 
+ server 10.125.82.103 ip vrf forwarding Mgmt-vrf 
+ ip vrf forwarding Mgmt-vrf 
+!
+aaa authentication login default group CCIS-AAA-LIST local-case 
+aaa authentication login console group CCIS-AAA-LIST local-case 
+aaa authentication login CCIS-AAA-LIST group CCIS-AAA-LIST local 
+aaa authentication enable default group CCIS-AAA-LIST enable 
+aaa authorization config-commands 
+aaa authorization exec CCIS-AAA-LIST group tacacs+ local if-authenticated 
+aaa authorization commands 1 CCIS-AAA-LIST group tacacs+ local if-authenticated 
+aaa authorization commands 15 CCIS-AAA-LIST group tacacs+ local if-authenticated 
+aaa accounting exec CCIS-AAA-LIST start-stop group tacacs+ 
+aaa accounting commands 1 CCIS-AAA-LIST start-stop group tacacs+ 
+aaa accounting commands 15 default start-stop group tacacs+ group CCIS-AAA-LIST
+aaa accounting commands 15 CCIS-AAA-LIST start-stop group tacacs+ 
+aaa accounting network CCIS-AAA-LIST start-stop group tacacs+ 
+aaa accounting connection CCIS-AAA-LIST start-stop group tacacs+ 
+aaa accounting system default start-stop group tacacs+ 
+!
+!
+!
+!
+!
+!
+aaa session-id common 
+clock timezone SGT 8 0 
+switch 1 provision c9300-48t 
+!
+!
+!
+!
+call-home
+ ! If contact email address in call-home is configured as sch-smart-licensing@cisco.com 
+ ! the email address configured in Cisco Smart License Portal will be used as contact email address to send SCH notifications. 
+ contact-email-addr sch-smart-licensing@cisco.com 
+ profile "CiscoTAC-1" 
+  active 
+  destination transport-method http 
+  no destination transport-method email 
+no ip source-route 
+!
+!
+!
+!
+ip domain name sgnet.gov.sg 
+!
+!
+!
+login on-success log 
+!
+!
+!
+!
+!
+!
+!
+no device-tracking logging theft 
+! 
+crypto pki trustpoint TP-self-signed-3596522380
+ enrollment selfsigned 
+ subject-name cn=I0S-Self-Signed-Certificate-3596522380 
+ revocation-check none 
+ rsakeypair TP-self-signed-3596522380 
+! 
+crypto pki trustpoint SLA-TrustPoint 
+ enrollment pkcsl2 
+ revocation-check crl 
+! 
+! 
+crypto pki certificate chain TP-self-signed-3596522380 
+crypto pki certificate chain SLA-TrustPoint 
+ certificate ca 01 
+  30820321 30820209 A0030201 02020101 300D0609 2A864886 F70D0101 0B050030 
+  32310E30 00060355 040A1305 43697363 6F312030 1E060355 04031317 43697363 
+  6F204C69 63656E73 696E6720 526F6F74 20434130 1E170D31 33303533 30313934 
+  3834375A 170D3338 30353330 31393438 34375A30 32310E30 00060355 040A1305 
+  43697363 6F312030 1E060355 04031317 43697363 6F204C69 63656E73 696E6720 
+  526F6F74 20434130 82012230 0D06092A 864886F7 00010101 05000382 010F0030 
+  30820321 30820209 A0030201 02020101 30000609 2A864886 F7000101 OB050030 
+  32310E30 00060355 040A1305 43697363 6F312030 1E060355 04031317 43697363 
+  6F204C69 63656E73 696E6720 526F6F74 20434130 1E170031 33303533 30313934 
+  3834375A 17003338 30353330 31393438 34375A30 32310E30 00060355 040A1305 
+  43697363 6F312030 1E060355 04031317 43697363 6F204C69 63656E73 696E6720 
+  526F6F74 20434130 82012230 0006092A 864886F7 00010101 05000382 010F0030 
+  82010A02 82010100 A6BCBD96 131E05F7 145EA72C 2CD686E6 17222EA1 F1EFF64D 
+  CBB4C798 212AA147 C655D8D7 9471380D 8711441E 1AAF071A 9CAE6388 8A38E520 
+  1C394078 462EF239 C659F715 B98C0A59 5BBB5CBD OCFEBEA3 700A8BF7 D8F256EE 
+  4AA4E800 DB6FD1C9 60B1F018 FFC69C96 6FA68957 A26170E7 104F005F EA2956AC 
+  7390A3EB 2B5436AD C847A2C5 DAB553EB 69A9A535 58E9F3E3 COBD23CF 58607188 
+  68E69491 20F320E7 948E7107 AE3BCC84 F10684C7 4BC8E0OF 539BA42B 42C68BB7 
+  C7479096 B4CB2D62 EA2F5050 C7B062A4 68110958 E8250FC4 5D5D5FB8 8F270191 
+  C55F0D76 61F9A4CD 3D992327 A8BBO3BD 4E607069 7CBADF8B DF5F4368 95135E44 
+  DFC7C6CF 04007F01 02030100 01A34230 40300E06 0355100F 0101FF04 04030201 
+  06300F06 03551013 0101FF04 05300301 01FF3010 0603551D 0E041604 14490085 
+  4B3D31E5 1B3E6A17 606AF333 3D3B4C73 E8300006 092A8648 86F70001 010B0500 
+  03820101 00507F24 D3932A66 8602509F E838AE5C 6040F6B0 49631C78 2400A905 
+  604EDCDE FF4FED2B 77FC460E CD636FDB 0044681E 3A5673AB 909303B1 6C9E3D8B 
+  D98987BF E4OCBD9E 1AECAOC2 2189BB5C 8FA85686 CD98B646 5575B146 8DFC66A8 
+  467A3DF4 40565700 6ADFOFOD CF835015 3C04FF7C 21E878AC 11BA9CD2 55A9232C 
+  7CA7B7E6 C1AF74F6 152E99B7 B1FCF9BB E973DE7F 5BDDEB86 C71E3B49 1765308B 
+  5FBODA06 B92AFE7F 494E8A9E 07B85737 F3A58BE1 1A48A229 C37C1E69 39F08678 
+  80000016 D6BACECA EEBC7CF9 8428787B 35202CDC 60E4616A B623CDBD 230E3AFB
+  418616A9 4093E049 4D10AB75 27E86F73 932E35B5 8862FDAE 0275156F 719BB2F0 
+  D697DF7F 28
+        quit
+! 
+!
+license boot level network-advantage addon dna-advantage
+license smart reservation
+! 
+! 
+diagnostic bootup level minimal
+!
+spanning-tree mode rapid-pvst
+spanning-tree extend system-id
+archive
+ log con-Fig
+  logging enable
+  logging size 200
+  notify syslog contenttype plaintext
+  hidekeys
+memory free low-watermark processor 134356
+!
+username NUA-nis.sladm password 7 047522352F224F471A37262443535C5672
+!
+redundancy 
+ mode sso
+!
+!
+!
+!
+!
+transceiver type all
+ monitoring
+no cdp run
+!
+!
+class-map match-any system-cpp-police-ewlc-control
+ description EWLC Control
+class-map match-any system-cpp-police-topology-control
+ description Topology control
+class-map match-any system-cpp-police-sw-forward
+ description Sw forwarding, L2 LVX data packets, LOGGING, Transit Traffic 
+class-map match-any system-cpp-default
+ description EWLC Data, Inter FED Traffic
+class-map match-any system-cpp-police-sys-data
+ description Openflow, Exception, EGR Exception, NFL Sampled Data, RPF Failed class-map match-any system-cpp-police-punt-webauth
+class-map match-any system-cpp-police-punt-webauth
+ description Punt Webauth
+class-map match-any system-cpp-police-121vx-control
+ description L2 LVX control packets
+class-map match-any system-cpp-police-forus
+ description Forus Address resolution and Forus traffic
+class-map match-any system-cpp-police-multicast-end-station
+ description MCAST END STATION
+class-map match-any system-cpp-police-high-rate-app
+class-map match-any system-cpp-police-forus
+ description Forus Address resolution and Forus traffic 
+class-map match-any system-cpp-police-multicast-end-station
+ description MCAST END STATION
+class-map match-any system-cpp-police-high-rate-app 
+ description High Rate Applications
+class-map match-any system-cpp-police-multicast 
+ description MCAST Data
+class-map match-any system-cpp-police-l2-control 
+ description L2 control
+class-map match-any system-cpp-police-dotlx-auth 
+ description DOT1X Auth
+class-map match-any system-cpp-police-data
+ description ICMP redirect, ICMP_GEN and BROADCAST 
+class-map match-any system-cpp-police-stackwise-virt-control 
+ description Stackwise Virtual 00B
+class-map match-any non-client-nrt-class
+class-map match-any system-cpp-police-routing-control
+ description Routing control and Low Latency
+class-map match-any system-cpp-police-protocol-snooping
+ description Protocol snooping
+class-map match-any system-cpp-police-dhcp-snooping 
+ description DHCP snooping
+class-map match-any system-cpp-police-ios-routing
+ description L2 control, Topology control, Routing control, Low Latency
+class-map match-any system-cpp-police-system-critical 
+ description System Critical and Gold Pkt
+class-map match-any system-cpp-police-ios-feature
+ description ICMPGEN,BROADCAST,ICMP,L2LVXCntrl,ProtoSnoop,PuntWebauth,MCASTData,Transit,DOT1XAuth,Swfwd,LOGGING,L2LVXData,ForusTraffic,ForusARP,McastEndStn,Openflow,Except ion,EGRExcption,NflSampled,RpfFailed
+!
+policy-map system-cpp-policy
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ description "MGMT"
+ vrf forwarding Mgmt-vrf
+ ip address 10.125.86.160 255.255.255.128 
+ negotiation auto
+!
+interface GigabitEthernet1/0/1
+ shutdown
+!
+interface GigabitEthernet1/0/2
+ shutdown
+!
+interface GigabitEthernet1/0/3
+ shutdown
+!
+interface GigabitEthernet1/0/4
+ shutdown
+!
+interface GigabitEthernet1/0/5
+ shutdown
+!
+interface GigabitEthernet1/0/6
+ shutdown
+!
+interface GigabitEthernet1/0/7
+ shutdown
+!
+interface GigabitEthernet1/0/8
+ shutdown
+!
+interface GigabitEthernet1/0/9
+ shutdown
+!
+interface GigabitEthernet1/0/10
+ shutdown
+!
+interface GigabitEthernet1/0/11
+ shutdown
+!
+interface GigabitEthernet1/0/43 
+ shutdown
+!
+interface GigabitEthernet1/0/44 
+ shutdown
+!
+interface GigabitEthernet1/0/45 
+ shutdown
+!
+interface GigabitEthernet1/0/46 
+ shutdown
+!
+interface GigabitEthernet1/0/47 
+ shutdown
+!
+interface GigabitEthernet1/0/48 
+ shutdown
+!
+interface GigabitEthernetl/1/1 
+ shutdown
+!
+interface GigabitEthernetl/1/2 
+ shutdown
+!
+interface GigabitEthernetl/1/3 
+ shutdown
+!
+interface GigabitEthernetl/1/4 
+ shutdown
+!
+interface TenGigabitEthernet1/1/1
+ description "To_BUILD_CISCO_FW" 
+ switchport mode trunk
+!
+interface TenGigabitEthernetl/1/2
+ description "To_BUILD_PALO_FW" 
+ switchport mode trunk
+!
+interface TenGigabitEthernetl/1/3 
+ shutdown
+!
+interface TenGigabitEthernetl/1/4 
+ shutdown
+!
+interface TenGigabitEthernetl/1/5 
+ shutdown
+!
+interface TenGigabitEthernetl/1/6 
+ shutdown
+!
+interface TenGigabitEthernetl/1/7 
+ shutdown
+!
+interface TenGigabitEthernetl/1/8 
+ shutdown
+!
+interface FortyGigabitEthernetl/1/1 shutdown
+ shutdown
+!
+interface FortyGigabitEthernetl/1/2 shutdown
+ shutdown
+!
+interface TwentyFiveGigE1/1/1 
+ shutdown
+!
+interface TwentyFiveGigE1/1/2 
+ shutdown
+!
+interface AppGigabitEthernet1/0/1
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+ip forward-protocol nd 
+no ip http server
+no ip http secure-server
+ip route vrf Mgmt-vrf 0.0.0.0 0.0.0.0 10.125.86.129
+ip tacacs source-interface GigabitEthernet0/0 vrf Mgmt-vrf 
+ip ssh time-out 60
+ip ssh version 2
+ip ssh server algorithm mac hmac-sha2-256 hmac-sha2-512
+ip ssh server algorithm encryption aes256-ctr
+ip ssh server algorithm kex diffie-hellman-group14-sha1
+ip ssh client algorithm mac hmac-sha2-256 hmac-sha2-512
+ip ssh client algorithm encryption aes256-ctr
+ip ssh client algorithm kex diffie-hellman-group14-sha1
+!
+!
+ip access-list standard VTY_ACL
+ 10 permit 10.125.21.91 
+ 20 permit 10.125.21.92 
+ 30 permit 10.120.71.93 
+ 40 permit 10.120.71.92 
+ 50 permit 10.122.71.94 
+ 60 permit 10.122.71.93 
+ 70 permit 10.120.71.94 
+ 80 permit 10.122.71.92 
+ 90 permit 10.122.71.91 
+ 100 permit 10.120.71.91 
+ 110 permit 10.125.85.91 
+ 120 permit 172.16.0.0 0.0.255.255
+ 130 permit 172.17.0.0 0.0.255.255
+ 140 deny any log
+ip access-list standard snmp_acl
+ 10 permit 10.125.14.68 
+ 20 permit 10.125.14.70 
+ 30 permit 10.125.78.68 
+ 40 permit 10.125.78.70 
+ 50 deny any log
+!
+!
+logging source-interface GigabitEthernet0/0 vrf Mgmt-vrf
+logging host 10.125.75.134 vrf Mgmt-vrf
+!
+!
+snmp-server group snmpgiims v3 priv
+snmp-server group snmpgciims v3 priv
+snmp-server community community_string RO snmp_acl
+snmp-server trap-source GigabitEthernet0/0
+snmp-server source-interface informs GigabitEthernet0/0
+snmp-server enable traps snmp authentication linkdown linkup coldstart warmstart
+snmp-server enable traps flowmon
+snmp-server enable traps entity-perf throughput-notif
+snmp-server enable traps call-home message-send-fail server-fail
+snmp-server enable traps tty
+snmp-server enable traps ospf state-change
+snmp-server enable traps ospf errors
+snmp-server enable traps ospf retransmit
+snmp-server enable traps ospf lsa
+snmp-server enable traps ospf cisco-specific state-change nssa-trans-change
+snmp-server enable traps ospf cisco-specific state-change shamlink interface
+snmp-server enable traps ospf cisco-specific state-change shamlink neighbor
+snmp-server enable traps ospf cisco-specific errors
+snmp-server enable traps ospf cisco-specific retransmit
+snmp-server enable traps ospf cisco-specific lsa
+snmp-server enable traps eigrp
+snmp-server enable traps auth-framework sec-violation
+snmp-server enable traps vlancreate
+snmp-server enable traps vlandelete
+snmp-server enable traps license
+snmp-server enable traps smart-license
+snmp-server enable traps cpu threshold
+snmp-server enable traps memory bufferpeak
+snmp-server enable traps fru-ctrl
+snmp-server enable traps flash insertion removal lowspace
+snmp-server enable traps entity
+snmp-server enable traps cef resource-failure peer-state-change peer-fib-state-change inconsistency
+snmp-server enable traps lisp
+snmp-server enable traps isis
+snmp-server enable traps ipsla
+snmp-server enable traps entity-diag boot-up-fail hm-test-recover hm-thresh-reached scheduled-test-fail 
+snmp-server enable traps bfd
+snmp-server enable traps config-copy
+snmp-server enable traps config
+snmp-server enable traps config-ctid
+snmp-server enable traps dhcp
+snmp-server enable traps event-manager
+snmp-server enable traps hsrp
+snmp-server enable traps ipmulticast
+snmp-server enable traps msdp
+snmp-server enable traps ospfv3 state-change
+snmp-server enable traps ospfv3 errors
+snmp-server enable traps pim neighbor-change rp-mapping-change invalid-pim-message
+snmp-server enable traps syslog
+snmp-server enable traps bgp
+snmp-server enable traps bgp cbgp2
+snmp-server enable traps nhrp nhs
+snmp-server enable traps nhrp nhc
+snmp-server enable traps nhrp nhp
+snmp-server enable traps nhrp quota-exceeded
+snmp-server enable traps local-auth
+snmp-server enable traps rf
+snmp-server enable traps transceiver all
+snmp-server enable traps bulkstat collection transfer
+snmp-server enable traps vrfmib vrf-up vrf-down vnet-trunk-up vnet-trunk-down
+snmp-server host 10.125.14.68 vrf Mgmt-vrf version 3 priv snmpgiims
+snmp-server host 10.125.14.70 vrf Mgmt-vrf version 3 priv snmpgiims
+snmp-server host 10.125.78.68 vrf Mgmt-vrf version 3 priv snmpgiims
+snmp-server host 10.125.78.70 vrf Mgmt-vrf version 3 priv snmpgiims
+!
+! 
+!
+control-plane
+ service-policy input system-cpp-policy
+!
+banner exec AC
+
+
+WARNING: Use of this System is restricted to authorised users only. 
+ User activity may be monitored and/or recorded. Anyone using this 
+ System expressly consents to such monitoring and/or recording.If 
+ possible criminal activity is detected, these records, along with 
+ certain personal information, may be provided to law enforcement 
+ officials.AC
+banner login AC
+
+
+WARNING: Use of this System is restricted to authorised users only. 
+ User activity may be monitored and/or recorded. Anyone using this 
+ System expressly consents to such monitoring and/or recording.If 
+ possible criminal activity is detected, these records, along with 
+ certain personal information, may be provided to law enforcement 
+ officials.AC
+banner motd AC
+
+
+WARNING: Use of this System is restricted to authorised users only. 
+ User activity may be monitored and/or recorded. Anyone using this 
+ System expressly consents to such monitoring and/or recording.If 
+ possible criminal activity is detected, these records, along with 
+ certain personal information, may be provided to law enforcement 
+ officials.AC
+!
+line con 0
+ session-timeout 15
+ exec-timeout 15 0
+ login authentication CCIS-AAA-LIST
+ stopbits 1
+line vty 0 4
+ session-timeout 15
+ access-class VTY_ACL in vrf-also
+ exec-timeout 15 0
+ login authentication CCIS-AAA-LIST 
+ transport preferred ssh
+ transport input ssh
+line vty 5 15
+ no exec
+ transport input none
+!
+ntp source GigabitEthernet0/0
+ntp server vrf Mgmt-vrf 10.120.97.68 prefer ntp server vrf Mgmt-vrf 10.122.97.68
+ntp server vrf Mgmt-vrf 10.122.97.68
+ntp server vrf Mgmt-vrf 10.120.97.69 
+ntp server vrf Mgmt-vrf 10.122.97.69
+!
+!
+!
+!
+! 
+! 
+end
+

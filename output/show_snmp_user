@@ -1,0 +1,13 @@
+User name: v3user
+Engine ID: 800000090300CA0105AD0000
+storage-type: nonvolatile  active
+Authentication Protocol: SHA
+Privacy Protocol: None
+Group-name: examplegroup
+
+User name: example_snmp_user
+Engine ID: 800000090300CA0105AD0000
+storage-type: nonvolatile  active
+Authentication Protocol: MD5
+Privacy Protocol: AES256
+Group-name: example_snmp_group

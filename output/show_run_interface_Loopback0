@@ -1,0 +1,7 @@
+Building configuration...
+
+Current configuration : 67 bytes
+!
+interface Loopback0
+ ip address 10.10.10.10 255.255.255.255
+end

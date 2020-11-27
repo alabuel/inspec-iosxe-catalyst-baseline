@@ -1,0 +1,273 @@
+---
+- name: Cisco_iosxe_getting_necessary_output_for_complianceCheck
+  hosts: iosxe
+  gather_facts: no
+
+  tasks:
+    - name: Create output directory
+      file:
+        path: ./output
+        state: directory
+
+    - name: run show running-config
+      ios_command:
+        commands: 
+          - show running-config
+      register: show_running_config
+      no_log: true
+      ignore_errors: yes
+    - name: Save Running Config output
+      copy:
+        content: "{{ item }}"
+        dest: "./output/show_running_config"
+        force: yes
+      with_items: "{{ show_running_config.stdout }}"
+      no_log: true
+      ignore_errors: yes
+    
+    - name: run show cdp
+      ios_command:
+        commands: 
+          - show cdp
+      register: show_cdp
+      no_log: true
+      ignore_errors: yes
+    - name: Save CDP output
+      copy:
+        content: "{{ item }}"
+        dest: "./output/show_cdp"
+        force: yes
+      with_items: "{{ show_cdp.stdout }}"
+      no_log: true
+      ignore_errors: yes
+    
+    - name: run show ip interface
+      ios_command:
+        commands: 
+          - show ip interface
+      register: show_ip_interface
+      no_log: true
+      ignore_errors: yes
+    - name: Save IP Interface output
+      copy:
+        content: "{{ item }}"
+        dest: "./output/show_ip_interface"
+        force: yes
+      with_items: "{{ show_ip_interface.stdout }}"
+      no_log: true
+      ignore_errors: yes
+
+    - name: run show ipv6 interface
+      ios_command:
+        commands: 
+          - show ipv6 interface
+      register: show_ipv6_interface
+      no_log: true
+      ignore_errors: yes
+    - name: Save IPv6 Interface output
+      copy:
+        content: "{{ item }}"
+        dest: "./output/show_ipv6_interface"
+        force: yes
+      with_items: "{{ show_ipv6_interface.stdout }}"
+      no_log: true
+      ignore_errors: yes
+    
+    - name: run show ip interface brief
+      ios_command:
+        commands: 
+          - show ip interface brief
+      register: show_ip_interface_brief
+      no_log: true
+      ignore_errors: yes
+    - name: Save IP Interface Brief output
+      copy:
+        content: "{{ item }}"
+        dest: "./output/show_ip_interface_brief"
+        force: yes
+      with_items: "{{ show_ip_interface_brief.stdout }}"
+      no_log: true
+      ignore_errors: yes
+    
+    - name: run show run interface
+      ios_command:
+        commands:
+          - "show run interface {{ item.split(' ')[0] }}"
+      when: item.split(' ')[0] != 'Interface'
+      loop: "{{ show_ip_interface_brief.stdout[0].split('\n') }}"
+      register: show_run_interface
+      no_log: true
+      ignore_errors: yes
+    - name: save show run interface
+      copy:
+        content: "{{ item.stdout[0] }}"
+        dest: "./output/show_run_interface_{{ item.item.split(' ')[0] | replace('/','_') }}"
+        force: yes
+      when: item.stdout is defined
+      with_items: "{{ show_run_interface.results }}"
+      no_log: true
+      ignore_errors: yes
+
+    - name: run show run interface
+      ios_command:
+        commands:
+          - "show interface loopback {{ item.split(' ')[0] }}"
+      when: item.split(' ')[0] | regex_search('^Loopback.*')
+      loop: "{{ show_ip_interface_brief.stdout[0].split('\n') }}"
+      register: show_run_interface
+      no_log: true
+      ignore_errors: yes
+    - name: save show interface loopback
+      copy:
+        content: "{{ item.stdout[0] }}"
+        dest: "./output/show_interface_loopback_{{ item.item.split(' ')[0] | replace('/','_') }}"
+        force: yes
+      when: item.stdout is defined
+      with_items: "{{ show_run_interface.results }}"
+      no_log: true
+      ignore_errors: yes
+    
+    - name: run show ip ssh
+      ios_command:
+        commands: 
+          - show ip ssh
+      register: show_ip_ssh
+      no_log: true
+      ignore_errors: yes
+    - name: Save IP SSH output
+      copy:
+        content: "{{ item }}"
+        dest: "./output/show_ip_ssh"
+        force: yes
+      with_items: "{{ show_ip_ssh.stdout }}"
+      no_log: true
+      ignore_errors: yes
+    
+    - name: run show log
+      ios_command:
+        commands: 
+          - show log
+      register: show_log
+      no_log: true
+      ignore_errors: yes
+    - name: Save Log output
+      copy:
+        content: "{{ item }}"
+        dest: "./output/show_log"
+        force: yes
+      with_items: "{{ show_log.stdout }}"
+      no_log: true
+      ignore_errors: yes
+    
+    - name: run show policy-map control-plane
+      ios_command:
+        commands: 
+          - show policy-map control-plane
+      register: show_policy_map_control_plane
+      no_log: true
+      ignore_errors: yes
+    - name: Save Policy Map Control Plane output
+      copy:
+        content: "{{ item }}"
+        dest: "./output/show_policy_map_control_plane"
+        force: yes
+      with_items: "{{ show_policy_map_control_plane.stdout }}"
+      no_log: true
+      ignore_errors: yes
+    
+    - name: run show snmp
+      ios_command:
+        commands: 
+          - show snmp
+      register: show_snmp
+      no_log: true
+      ignore_errors: yes
+    - name: Save SNMP output
+      copy:
+        content: "{{ item }}"
+        dest: "./output/show_snmp"
+        force: yes
+      with_items: "{{ show_snmp.stdout }}"
+      no_log: true
+      ignore_errors: yes
+    
+    - name: run show snmp chassis
+      ios_command:
+        commands: 
+          - show snmp chassis
+      register: show_snmp_chassis
+      no_log: true
+      ignore_errors: yes
+    - name: Save SNMP Chassis output
+      copy:
+        content: "{{ item }}"
+        dest: "./output/show_snmp_chassis"
+        force: yes
+      with_items: "{{ show_snmp_chassis.stdout }}"
+      no_log: true
+      ignore_errors: yes
+    
+    - name: run show snmp community
+      ios_command:
+        commands: 
+          - show snmp community
+      register: show_snmp_community
+      no_log: true
+      ignore_errors: yes
+    - name: Save SNMP Community output
+      copy:
+        content: "{{ item }}"
+        dest: "./output/show_snmp_community"
+        force: yes
+      with_items: "{{ show_snmp_community.stdout }}"
+      no_log: true
+      ignore_errors: yes
+    
+    - name: run show snmp group
+      ios_command:
+        commands: 
+          - show snmp group
+      register: show_snmp_group
+      no_log: true
+      ignore_errors: yes
+    - name: Save SNMP Group output
+      copy:
+        content: "{{ item }}"
+        dest: "./output/show_snmp_group"
+        force: yes
+      with_items: "{{ show_snmp_group.stdout }}"
+      no_log: true
+      ignore_errors: yes
+    
+    - name: run show snmp host
+      ios_command:
+        commands: 
+          - show snmp host
+      register: show_snmp_host
+      no_log: true
+      ignore_errors: yes
+    - name: Save SNMP Host output
+      copy:
+        content: "{{ item }}"
+        dest: "./output/show_snmp_host"
+        force: yes
+      with_items: "{{ show_snmp_host.stdout }}"
+      no_log: true
+      ignore_errors: yes
+    
+    - name: run show snmp user
+      ios_command:
+        commands: 
+          - show snmp user
+      register: show_snmp_user
+      no_log: true
+      ignore_errors: yes
+    - name: Save SNMP User output
+      copy:
+        content: "{{ item }}"
+        dest: "./output/show_snmp_user"
+        force: yes
+      with_items: "{{ show_snmp_user.stdout }}"
+      no_log: true
+      ignore_errors: yes
+    

@@ -1,0 +1,3 @@
+Interface                  IP-Address      OK? Method Status                Protocol
+FastEthernet0/0            10.2.3.2        YES NVRAM  up                    up      
+Loopback0                  10.10.10.10     YES manual up                    up      

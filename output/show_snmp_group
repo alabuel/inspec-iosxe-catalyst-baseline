@@ -1,0 +1,64 @@
+groupname: ILMI                             security model:v1 
+readview : *ilmi                            writeview: *ilmi                           
+notifyview: <no notifyview specified>       
+row status: active
+
+groupname: ILMI                             security model:v2c 
+readview : *ilmi                            writeview: *ilmi                           
+notifyview: <no notifyview specified>       
+row status: active
+
+groupname: v3host                           security model:v3 priv 
+readview : v1default                        writeview: <no writeview specified>        
+notifyview: <no notifyview specified>       
+row status: active
+
+groupname: Private                          security model:v1 
+readview : v1default                        writeview: v1default                       
+notifyview: <no notifyview specified>       
+row status: active
+
+groupname: Private                          security model:v2c 
+readview : v1default                        writeview: v1default                       
+notifyview: <no notifyview specified>       
+row status: active
+
+groupname: snmptrap                         security model:v1 
+readview : <no readview specified>          writeview: <no writeview specified>        
+notifyview: *tv.00000001.00000000.00000000.0
+row status: active
+
+groupname: snmptrap                         security model:v2c 
+readview : <no readview specified>          writeview: <no writeview specified>        
+notifyview: *tv.00000001.00000000.00000000.0
+row status: active
+
+groupname: pubwithacl                       security model:v1 
+readview : v1default                        writeview: <no writeview specified>        
+notifyview: <no notifyview specified>       
+row status: active	access-list: 1
+
+groupname: pubwithacl                       security model:v2c 
+readview : v1default                        writeview: <no writeview specified>        
+notifyview: <no notifyview specified>       
+row status: active	access-list: 1
+
+groupname: pubcomstring                     security model:v1 
+readview : v1default                        writeview: <no writeview specified>        
+notifyview: <no notifyview specified>       
+row status: active
+
+groupname: pubcomstring                     security model:v2c 
+readview : v1default                        writeview: <no writeview specified>        
+notifyview: <no notifyview specified>       
+row status: active
+
+groupname: examplev3host                    security model:v3 priv 
+readview : <no readview specified>          writeview: <no writeview specified>        
+notifyview: *tv.FFFFFFFF.FFFFFFFF.FFFFFFFF.F
+row status: active
+
+groupname: example_snmp_group               security model:v3 priv 
+readview : v1default                        writeview: <no writeview specified>        
+notifyview: <no notifyview specified>       
+row status: active

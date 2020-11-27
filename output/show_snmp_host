@@ -1,0 +1,5 @@
+Notification host: 10.2.3.4 udp-port: 162 type: trap
+user: examplev3host security model: v3 priv
+
+Notification host: 10.4.4.4 udp-port: 162 type: trap
+user: snmptrap  security model: v1
