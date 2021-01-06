@@ -5,6 +5,7 @@
 BANNER = attribute('BANNER', value: ['WARNING: Use of this System is restricted to authorised users only. User activity may be monitored and/or recorded. Anyone using this System expressly consents to such monitoring and/or recording. If possible criminal activity is detected, these records, along with certain personal information, may be provided to law enforcement officials.'])
 SSH_AUTH_TIMEOUT = attribute('SSH_AUTH_TIMEOUT', value: 900)
 SSH_AUTH_RETRIES = attribute('SSH_AUTH_RETRIES', value: 3)
+LOGGING_BUFFER = attribute('LOGGING_BUFFER', value: 64000)
 NAMED_ACCOUNTS = attribute('NAMED_ACCOUNTS', value: [])
 NA_BASELINE_SETTINGS = attribute('NA_BASELINE_SETTINGS', value: ['4.1.1','4.1.2','4.1.3','4.1.4','4.4.1'])
 
@@ -1089,7 +1090,7 @@ control '6.2.1 Logging Buffer' do
   tag cis: '2.2.2'
 
   describe cisco_ios_running_config do
-    it { should have_line /^logging buffered 64000$/ }
+    it { should have_line /^logging buffered #{LOGGING_BUFFER}$/ }
   end
 
   only_if { !NA_BASELINE_SETTINGS.include? '6.2.1' }
